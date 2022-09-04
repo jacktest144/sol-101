@@ -6,12 +6,15 @@ contract DecentralizedLibrary {
     /// @notice Public Variable to track all the hashes(cids) that has been uploaded to library
     /// @dev Variable is an array of strings
     string[] public allUploadedFiles;
+
     /// @notice Public Variable to track the addresses that has uploaded files to Library
     /// @dev Variable is an array of addresses
     address[] public upLoaders;
+
     /// @notice Public Variable to track the uploaded hashes of the metadata of files uploaded by an address
     /// @dev Variable is an array of strings. Each upload generates a string and that string is stored in an array an passed into this variable
     mapping(address => string[]) public _uploadedCIDS;
+
     /// @notice Public Variable to track the uploaded hashes of the metadata of files uploaded by an address
     /// @dev Variable is an array of strings. Each upload generates a string and that string is stored in an array an passed into this variable
     mapping(address => string[]) public _sharedFiles;
@@ -25,6 +28,7 @@ contract DecentralizedLibrary {
     /// @dev Update the mapping based on the address calling the function with the array of uploaded hashes
     /// @param _cidsToUpload The Array list of hashes to upload to IPFS
     function _upload(string[] memory _cidsToUpload) public {
+        require(!isAnUploader(msg.sender));
         _uploadedCIDS[msg.sender] = _cidsToUpload;
         upLoaders.push(msg.sender);
         for (uint256 i = 0; i < _cidsToUpload.length; i += 1) {
@@ -129,8 +133,6 @@ contract DecentralizedLibrary {
     }
 
 
-    //HELPER FUNCTIONS
-    //HELPER FUNCTIONS
     //HELPER FUNCTIONS
 
 
